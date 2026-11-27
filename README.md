@@ -64,6 +64,7 @@
 ```powershell
 python -m pip install pandas pyarrow
 python .\src\features.py
+python .\src\features.py --version v2
 ```
 
 [Скрипт расчёта](src/features.py) сохраняет результат в корне репозитория, перечитывает столбец `ID` и проверяет число строк и порядок идентификаторов.
