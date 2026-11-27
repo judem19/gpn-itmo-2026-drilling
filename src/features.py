@@ -1,9 +1,13 @@
+import argparse
 from pathlib import Path
 
 import pandas as pd
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Собрать таблицу признаков буровой установки")
+    parser.add_argument("--version", choices=["v1", "v2"], default="v1")
+    version = parser.parse_args().version
     project = Path(__file__).resolve().parents[1]
     data = pd.read_parquet(project / "clean_data.parquet")
     original_ids = data["ID"].copy()
@@ -41,7 +45,13 @@ def main():
     block_window = data.rolling("30s", on="Time", min_periods=2)["TravelingBlockPosition"]
     data["block_range_30s"] = block_window.max() - block_window.min()
 
-    output = project / "features_v1.parquet"
+    if version == "v2":
+        # Окно (t - 30 с, t] включает текущий замер и только уже известные строки.
+        flow_window = data.rolling("30s", on="Time", min_periods=2)["InletFlow"]
+        data["flow_median_30s"] = flow_window.median()
+        data["flow_deviation_30s"] = flow - data["flow_median_30s"]
+
+    output = project / f"features_{version}.parquet"
     data.to_parquet(output, index=False)
     saved_ids = pd.read_parquet(output, columns=["ID"])["ID"]
     if len(saved_ids) != len(original_ids) or not saved_ids.equals(original_ids):
