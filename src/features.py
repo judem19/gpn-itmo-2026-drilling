@@ -9,7 +9,8 @@ def main():
     parser.add_argument("--version", choices=["v1", "v2"], default="v1")
     version = parser.parse_args().version
     project = Path(__file__).resolve().parents[1]
-    data = pd.read_parquet(project / "clean_data.parquet")
+    data_dir = project / "data"
+    data = pd.read_parquet(data_dir / "clean_data.parquet")
     original_ids = data["ID"].copy()
     original_columns = data.columns
 
@@ -51,7 +52,7 @@ def main():
         data["flow_median_30s"] = flow_window.median()
         data["flow_deviation_30s"] = flow - data["flow_median_30s"]
 
-    output = project / f"features_{version}.parquet"
+    output = data_dir / f"features_{version}.parquet"
     data.to_parquet(output, index=False)
     saved_ids = pd.read_parquet(output, columns=["ID"])["ID"]
     if len(saved_ids) != len(original_ids) or not saved_ids.equals(original_ids):

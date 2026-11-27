@@ -11,7 +11,7 @@ from sklearn.metrics import adjusted_rand_score
 
 root = Path(__file__).resolve().parents[1]
 ref = "ddd0085"
-data = pd.read_parquet(root / "clean_data.parquet")
+data = pd.read_parquet(root / "data" / "clean_data.parquet")
 csv = pd.read_csv(sys.argv[1])
 assert csv.shape[1] == 2 and csv.columns[0] == "ID"
 assert data.ID.is_unique and data.ID.equals(csv.ID) and data.Time.is_monotonic_increasing

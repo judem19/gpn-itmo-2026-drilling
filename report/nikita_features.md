@@ -1,6 +1,6 @@
 # Признаки Никиты для сегментации буровых операций
 
-Источник — `clean_data.parquet`. Скрипт `src/features.py` сохраняет исходные 12 столбцов и добавляет расчётные признаки: 10 в `features_v1.parquet` и ещё 2 в `features_v2.parquet`. В обеих таблицах 180 901 строк; скрипт проверяет совпадение количества и порядка `ID` после записи.
+Источник — `data/clean_data.parquet`. Скрипт `src/features.py` сохраняет исходные 12 столбцов и добавляет расчётные признаки: 10 в `data/features_v1.parquet` и ещё 2 в `data/features_v2.parquet`. В обеих таблицах 180 901 строк; скрипт проверяет совпадение количества и порядка `ID` после записи.
 
 Обозначения: `Δx = x[i] − x[i−1]`, `Δt = Time[i] − Time[i−1]` в секундах. Для производных при `Δt ≤ 0` получается пропуск. Знак скорости означает направление изменения **показания датчика**; физическое направление движения нужно сверять с устройством датчика.
 
@@ -36,7 +36,7 @@ python .\src\features.py --version v2
 Для просмотра нескольких строк без Excel:
 
 ```powershell
-python -c "import pandas as pd; print(pd.read_parquet('features_v2.parquet').head().to_string(index=False))"
+python -c "import pandas as pd; print(pd.read_parquet('data/features_v2.parquet').head().to_string(index=False))"
 ```
 
 `src/physical_model.py` — отдельная пробная модель, которая учится на CSV с метками Юли. Её внутреннее совпадение с этими метками не является официальным Score и не проверяет правильность технологических названий классов. Подробности — в `report/physical_model_2026-11-27.md`.

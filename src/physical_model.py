@@ -88,7 +88,7 @@ def main():
     parser.add_argument("labels", type=Path, help="CSV Юли с ID,operation")
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
-    data = pd.read_parquet(project / "features_v2.parquet")
+    data = pd.read_parquet(project / "data" / "features_v2.parquet")
     times = data["Time"].to_numpy()
     previous = np.searchsorted(times, times - np.timedelta64(60, "s"), side="right") - 1
     valid = previous >= 0
