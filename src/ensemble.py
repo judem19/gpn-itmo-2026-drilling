@@ -1,13 +1,16 @@
-import glob, numpy as np
+from pathlib import Path
+
+import numpy as np
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import adjusted_rand_score
 
 K = 9
+ROOT = Path(__file__).resolve().parents[1]
 # указать пути моделей для сборки ансамбля
-files = ["preds/pred_cap_gmm_tied_seed21.npy",
-         "preds/pred_cap_agglo_quantile.npy",
-         "preds/pred_cap_kmeans_robust.npy"]
-P = [np.load(f).astype(int) for f in files]
+files = [ROOT / "preds" / "pred_cap_gmm_tied_seed21.npy",
+         ROOT / "preds" / "pred_cap_agglo_quantile.npy",
+         ROOT / "preds" / "pred_cap_kmeans_robust.npy"]
+P = [np.load(f, allow_pickle=False).astype(int) for f in files]
 N = len(P[0])
 for f, p in zip(files, P):
     assert p.shape == (N,) and p.min() >= 0 and p.max() < K, f
@@ -35,4 +38,4 @@ for a, wi in zip(A, w):
 ens = votes.argmax(1)
 
 print("размеры классов:", np.bincount(ens, minlength=K))
-np.save("preds/pred_dania_vote.npy", ens)
+np.save(ROOT / "preds" / "pred_dania_vote.npy", ens)
