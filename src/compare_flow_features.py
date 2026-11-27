@@ -15,8 +15,8 @@ def main():
     parser.add_argument("--load", action="store_true", help="Проверить медиану HL поверх v2")
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
-    v1 = pd.read_parquet(project / "features_v1.parquet")
-    v2 = pd.read_parquet(project / "features_v2.parquet")
+    v1 = pd.read_parquet(project / "data" / "features_v1.parquet")
+    v2 = pd.read_parquet(project / "data" / "features_v2.parquet")
     pd.testing.assert_frame_equal(v1, v2[v1.columns])
     variants = (("v1", v1), ("v2", v2))
     if args.load:

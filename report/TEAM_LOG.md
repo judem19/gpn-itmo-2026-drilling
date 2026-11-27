@@ -17,9 +17,9 @@
 
 ## 2026-11-27 — Никита — признаки v1/v2 и пробная модель
 
-- Вход: `clean_data.parquet`; для пробной модели — метки Юли v11.
+- Вход: `data/clean_data.parquet`; для пробной модели — метки Юли v11.
 - Действие: собраны 12 расчётных признаков и обучена пробная RandomForest на устойчивых участках разметки Юли.
-- Результат: [`src/features.py`](../src/features.py), [`features_v2.parquet`](../features_v2.parquet), [паспорт признаков](nikita_features.md), [`src/physical_model.py`](../src/physical_model.py), [`preds/pred_nikita_physical_v1.npy`](../preds/pred_nikita_physical_v1.npy).
+- Результат: [`src/features.py`](../src/features.py), [`features_v2.parquet`](../data/features_v2.parquet), [паспорт признаков](nikita_features.md), [`src/physical_model.py`](../src/physical_model.py), [`preds/pred_nikita_physical_v1.npy`](../preds/pred_nikita_physical_v1.npy).
 - Проверка: 180 901 строк и тот же порядок ID; совпадение пробной модели с Юлей на отложенном дне 82,0%. Это не официальный Score и не независимая проверка истинных операций.
 - Отправка: пробная модель Никиты не отправлялась.
 - Дальше: проверять спорные классы по датчикам и реальным результатам отправок.
